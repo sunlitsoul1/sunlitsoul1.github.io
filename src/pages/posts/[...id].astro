@@ -1,0 +1,13 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { url, dateLabel } from '../../site';
+export async function getStaticPaths() { return (await getCollection('posts', ({data}) => !data.draft)).map(post => ({params: {id: post.id}, props: {post}})); }
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+---
+<Layout title={post.data.title} description={post.data.description}>
+  <div class="article-top"><a class="text-link" href={url()}>← 所有笔记</a></div>
+  <header class="article-header"><p class="eyebrow">{dateLabel(post.data.date)} · {post.data.tags.join(' / ')}</p><h1>{post.data.title}</h1><p>{post.data.description}</p></header>
+  <div class="article-layout"><article class="prose"><Content /></article>{headings.length > 0 && <aside class="toc"><p class="eyebrow">本篇目录</p>{headings.filter(h=>h.depth <= 3).map(h => <a class:list={{ indent: h.depth === 3 }} href={`#${h.slug}`}>{h.text}</a>)}</aside>}</div>
+</Layout>

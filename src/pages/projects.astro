@@ -1,0 +1,5 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../site';
+---
+<Layout title="项目"><section class="page-intro"><p class="eyebrow">LEARNING BY BUILDING</p><h1>在实践中理解<span class="green">。</span></h1><p>从一个小想法开始，把知识写进代码。</p></section><div class="project-grid">{site.projects.map(p => <a class="project-card" href={p.url} target="_blank" rel="noopener noreferrer"><p class="eyebrow">{p.tags.join(' / ')} ↗</p><h2>{p.name}</h2><p>{p.description}</p></a>)}</div>{site.projects.length === 0 && <div class="project-placeholder"><span class="green">↗</span><h2>下一个想法，正在路上。</h2><p>这里将收集我的项目，以及从想法到实现的过程。</p></div>}</Layout>

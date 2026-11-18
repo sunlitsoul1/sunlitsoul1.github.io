@@ -1,0 +1,26 @@
+---
+import { site, url } from '../site';
+import '../styles/global.css';
+const { title = site.title, description = site.description } = Astro.props;
+const current = Astro.url.pathname;
+const links = [['', '手记'], ['projects/', '项目'], ['about/', '关于']];
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} /><meta name="theme-color" content="#ffffff" />
+    <title>{title === site.title ? title : `${title} · ${site.title}`}</title>
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">跳到正文</a>
+    <header class="header shell">
+      <a class="brand" href={url()}><span class="brand-mark" aria-hidden="true">♛</span>{site.title}<span class="brand-dot">.</span></a>
+      <nav aria-label="主导航">{links.map(([path, label]) => <a class:list={{ active: current === url(path) }} href={url(path)} aria-current={current === url(path) ? 'page' : undefined}>{label}</a>)}{site.github && <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>}</nav>
+    </header>
+    <main id="main" class="shell"><slot /></main>
+    <footer class="shell footer"><span>© {new Date().getFullYear()} {site.author} · 学习手记</span><span>保持好奇，长夜有星。</span></footer>
+  </body>
+</html>
